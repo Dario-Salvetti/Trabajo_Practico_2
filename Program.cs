@@ -1,4 +1,9 @@
 using Microsoft.Data.Sqlite;
+string rutaBaseDedatos= "BasesDatos/BDProductos.db";
+using var conexion = new SqliteConnection($"Data Source={rutaBaseDedatos}");
+conexion.Open();
+Console.WriteLine("Conexion abierta");
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
