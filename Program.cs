@@ -32,25 +32,6 @@ crearTabla.ExecuteNonQuery();
 Console.WriteLine("Tablas creadas");
 
 
-
-using var crearTabla = conexion.CreateCommand();
-crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Catalogo
-    IdTipo INTEGER PRIMARY KEY AUTOINCREMENT,
-    Tipo TEXT NOT NULL
-)";
-crearTabla.ExecuteNonQuery();
-crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Productos
-    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Nombre TEXT NOT NULL,
-    Precio INTEGER NOT NULL,
-    Stock INTEGER NOT NULL,
-    IdTipo INTEGER NOT NULL,
-    FOREIGN KEY (IdTipo) REFERENCES Catalogo(IdTipo)
-)";
-
-crearTabla.ExecuteNonQuery();
-Console.WriteLine("Tablas creadas");
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
