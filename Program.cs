@@ -3,6 +3,7 @@ string rutaBaseDedatos= "BasesDatos/BDhitProductos.db";
 using var conexion = new SqliteConnection($"Data Source={rutaBaseDedatos}");
 conexion.Open();
 Console.WriteLine("Conexion abierta");
+
 using var crearTabla = conexion.CreateCommand();
  crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Catalogo
     IdTipo INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,7 +20,6 @@ crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Producto
 
 crearTabla.ExecuteNonQuery();
 Console.WriteLine("Tablas creadas");
-
 
 
 var builder = WebApplication.CreateBuilder(args);
