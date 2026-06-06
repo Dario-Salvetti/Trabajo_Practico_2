@@ -1,5 +1,5 @@
 using Microsoft.Data.Sqlite;
-string rutaBaseDedatos= "BasesDatos/BDhitProductos.db";
+string rutaBaseDedatos= "BasesDatos/BDProductos.db";
 using var conexion = new SqliteConnection($"Data Source={rutaBaseDedatos}");
 conexion.Open();
 Console.WriteLine("Conexion abierta");
@@ -10,10 +10,11 @@ using var crearTabla = conexion.CreateCommand();
     Tipo TEXT NOT NULL
 )";
 crearTabla.ExecuteNonQuery();
-crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Producto
-    IdProducto INTEGER PRIMARY KEY AUTOINCREMENT,
+crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Productos
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
     Nombre TEXT NOT NULL,
-    Precio REAL NOT NULL,
+    Precio INTEGER NOT NULL,
+    Stock INTEGER NOT NULL,
     IdTipo INTEGER NOT NULL,
     FOREIGN KEY (IdTipo) REFERENCES Catalogo(IdTipo)
 )";
