@@ -14,7 +14,7 @@ public class CatalogoService
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = @"
-            INSERT INTO Tipos (Tipo) VALUES ($tipo);
+            INSERT INTO Catalogo (Tipo) VALUES ($tipo);
         ";
 
         comando.Parameters.AddWithValue("$tipo", c.Tipo);
@@ -30,7 +30,7 @@ public class CatalogoService
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "SELECT Id, Tipo FROM Tipos";
+        comando.CommandText = "SELECT IdTipo, Tipo FROM Catalogo";
         using var res = comando.ExecuteReader();
 
         while (res.Read())
@@ -52,7 +52,7 @@ public class CatalogoService
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "DELETE FROM Tipos WHERE IdTipo = $id";
+        comando.CommandText = "DELETE FROM Catalogo WHERE IdTipo = $id";
         comando.Parameters.AddWithValue("$id",id);
         comando.ExecuteNonQuery();
     }
