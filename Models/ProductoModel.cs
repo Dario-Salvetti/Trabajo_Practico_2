@@ -1,5 +1,5 @@
 namespace TP2.Models;
-public class Producto // los pongo public? 
+public class Producto 
 {
     public int Id {get; set;} = 0;
     public string Nombre {get; set;} = "";
