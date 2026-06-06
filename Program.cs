@@ -1,11 +1,22 @@
 using Microsoft.Data.Sqlite;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddOpenApi();
+
+var app = builder.Build();
+
 string rutaBaseDedatos= "BasesDatos/BDProductos.db";
 using var conexion = new SqliteConnection($"Data Source={rutaBaseDedatos}");
 conexion.Open();
 Console.WriteLine("Conexion abierta");
 
 using var crearTabla = conexion.CreateCommand();
- crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Catalogo
+crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Catalogo
     IdTipo INTEGER PRIMARY KEY AUTOINCREMENT,
     Tipo TEXT NOT NULL
 )";
@@ -21,17 +32,6 @@ crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Productos
 
 crearTabla.ExecuteNonQuery();
 Console.WriteLine("Tablas creadas");
-
-
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
-var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
