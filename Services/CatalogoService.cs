@@ -30,7 +30,7 @@ public class CatalogoService
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "SELECT Id, Tipo FROM Catalogo";
+        comando.CommandText = "SELECT Id, Tipo FROM Catalogo;";
         using var res = comando.ExecuteReader();
 
         while (res.Read())
@@ -52,8 +52,26 @@ public class CatalogoService
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "DELETE FROM Catalogo WHERE Id = $id";
+        comando.CommandText = "DELETE FROM Catalogo WHERE Id = $id;";
         comando.Parameters.AddWithValue("$id",id);
         comando.ExecuteNonQuery();
+    }
+
+    public string ObtenerNombreXid(int id)
+    {
+        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
+        conexion.Open();
+        using var comando = conexion.CreateCommand();
+
+        comando.CommandText = "SELECT Tipo FROM Catalogo WHERE Id = $id;";
+        comando.Parameters.AddWithValue("$id", id);
+
+        using var leer = comando.ExecuteReader();
+
+        if (leer.Read())
+        {
+            return leer.GetString(1);
+        };
+        return null;
     }
 }
