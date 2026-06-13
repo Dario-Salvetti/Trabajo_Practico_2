@@ -23,7 +23,7 @@ public class ProductoService
         comando.ExecuteNonQuery();
     }
 
-    public ProductoIndividualDTO CambiarXId(int id, ProductoCambioDTO x)
+    public ProductoIndividualDTO CambiarXId(ProductoCambioDTO x)
     {
         using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
         conexion.Open();
@@ -35,7 +35,7 @@ public class ProductoService
             comando.CommandText = "UPDATE Productos SET Precio = $precio WHERE Id = $id;";
 
             comando.Parameters.AddWithValue("$precio", x.Precio);
-            comando.Parameters.AddWithValue("$id", id);
+            comando.Parameters.AddWithValue("$id", x.Id);
 
             comando.ExecuteNonQuery();
         }
@@ -46,7 +46,7 @@ public class ProductoService
             comando.CommandText = "UPDATE Productos SET Stock = (Stock - $stock) WHERE Id = $id;";
 
             comando.Parameters.AddWithValue("$stock", x.Stock);
-            comando.Parameters.AddWithValue("$id", id);
+            comando.Parameters.AddWithValue("$id", x.Id);
 
             comando.ExecuteNonQuery();
         }
@@ -57,12 +57,12 @@ public class ProductoService
             comando.CommandText = "UPDATE Productos SET IdTipo = $cate WHERE Id = $id;";
 
             comando.Parameters.AddWithValue("$cate", x.Categoria);
-            comando.Parameters.AddWithValue("$id", id);
+            comando.Parameters.AddWithValue("$id", x.Id);
 
             comando.ExecuteNonQuery();
         }
 
-        return ObtenerXId(id);
+        return ObtenerXId(x.Id);
     }
 
     public void BorrarXId (int id)
