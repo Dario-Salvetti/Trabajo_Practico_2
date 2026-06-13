@@ -74,4 +74,40 @@ public class CatalogoService
         };
         return null;
     }
+
+    public CatalogoDTO EnCatalogoXId(int id)
+    {
+        
+        return new CatalogoDTO()
+        {
+            Tipo = ObtenerNombreXid(id),
+            Prods = _productoService.GetAllProductos(id)
+        };
+    }
+
+    public List<CatalogoDTO> EnTodosCatalogos()
+    {
+        List<CatalogoDTO> catalogos = new List<CatalogoDTO>();
+
+        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
+        conexion.Open();
+        using var comando = conexion.CreateCommand();
+
+        comando.CommandText = "SELECT Id FROM Catalogo;";
+        using var res = comando.ExecuteReader();
+
+        while (res.Read())
+        {
+            catalogos.Add(EnCatalogoXId(res.GetInt32(0)));
+        }
+
+        return catalogos;
+    }
+
+    private readonly ProductoService _productoService;
+
+    public CatalogoService(ProductoService productoService)
+    {
+         _productoService = productoService;
+    }
 }
