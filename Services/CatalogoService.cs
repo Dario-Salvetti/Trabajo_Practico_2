@@ -5,7 +5,7 @@ using TP2.Services;
 
 namespace TP2.Services;
 
-public class CatalogoService : ICatalogoService
+public class CatalogoService
 {
     private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
     public void NuevaCat (CatalogoDTO c)
@@ -21,6 +21,16 @@ public class CatalogoService : ICatalogoService
         comando.Parameters.AddWithValue("$tipo", c.Tipo);
 
         comando.ExecuteNonQuery();
+    }
+
+    public string ObtenerNombreXid(int id)
+    {
+        return _auxiliarservice.ObtenerNombreXid(id);
+    }
+
+    public CatalogoDTO EnCatalogoXId(int id)
+    {
+        return _auxiliarservice.EnCatalogoXId(id);
     }
 
     public List<Catalogo> GetCatalogos()
@@ -58,34 +68,7 @@ public class CatalogoService : ICatalogoService
         comando.ExecuteNonQuery();
     }
 
-    public string ObtenerNombreXid(int id)
-    {
-        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
-        conexion.Open();
-        using var comando = conexion.CreateCommand();
-
-        comando.CommandText = "SELECT Tipo FROM Catalogo WHERE Id = $id;";
-        comando.Parameters.AddWithValue("$id", id);
-
-        using var leer = comando.ExecuteReader();
-
-        if (leer.Read())
-        {
-            return leer.GetString(1);
-        };
-        return null;
-    }
-
-    public CatalogoDTO EnCatalogoXId(int id)
-    {
-        
-        return new CatalogoDTO()
-        {
-            Tipo = ObtenerNombreXid(id),
-            Prods = _productoService.Value.GetAllProductos(id)
-        };
-    }
-
+    
     public List<CatalogoDTO> EnTodosCatalogos()
     {
         List<CatalogoDTO> catalogos = new List<CatalogoDTO>();
@@ -99,22 +82,22 @@ public class CatalogoService : ICatalogoService
 
         while (res.Read())
         {
-            catalogos.Add(EnCatalogoXId(res.GetInt32(0)));
+            catalogos.Add(_auxiliarservice.EnCatalogoXId(res.GetInt32(0)));
         }
 
         return catalogos;
     }
 
-    private readonly Lazy<IProductoService> _productoService;
+    private readonly AuxiliarService _auxiliarservice;
 
-    public CatalogoService(Lazy<IProductoService> productoService)
+    public CatalogoService(AuxiliarService auxiliarservice)
     {
-         _productoService = productoService;
+         _auxiliarservice = auxiliarservice;
     }
 }
 
 
-public interface ICatalogoService
+/*public interface ICatalogoService
 {
     void NuevaCat (CatalogoDTO c);
     List<Catalogo> GetCatalogos();
@@ -123,3 +106,4 @@ public interface ICatalogoService
     CatalogoDTO EnCatalogoXId(int id);
     List<CatalogoDTO> EnTodosCatalogos();
 }
+*/

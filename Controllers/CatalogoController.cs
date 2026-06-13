@@ -8,9 +8,9 @@ namespace TP_2.Controllers;
 [Route("[controller]")]
 public class CatalogoController : ControllerBase
 {
-    private readonly ICatalogoService _catalogoService;
+    private readonly CatalogoService _catalogoService;
 
-    public CatalogoController(ICatalogoService catalogoService)
+    public CatalogoController(CatalogoService catalogoService)
     {
         _catalogoService = catalogoService;
     }
