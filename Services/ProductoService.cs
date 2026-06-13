@@ -5,7 +5,7 @@ using TP2.Services;
 
 namespace TP2.Services;
 
-public class ProductoService
+public class ProductoService  : IProductoService
 {
     private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
     public void CrearProd(ProductoDTO p)
@@ -97,20 +97,20 @@ public class ProductoService
                 Nombre = leer.GetString(1),
                 Precio = leer.GetInt32(2),
                 Stock = leer.GetInt32(3),
-                Categoria = _catalogoService.ObtenerNombreXid(leer.GetInt32(4))
+                Categoria = _catalogoService.Value.ObtenerNombreXid(leer.GetInt32(4))
             };
         }
 
         return null;
     }
 
-    private readonly CatalogoService _catalogoService;
+    private readonly Lazy<ICatalogoService> _catalogoService;
 
-    public ProductoService(CatalogoService catalogoService)
+    public ProductoService(Lazy<ICatalogoService> catalogoService)
     {
          _catalogoService = catalogoService;
     }
-    //MODIFICAR LUEGO LO QUE ESTE DEBAJO DE ESTA LINEA
+
     public List<Producto> GetAllProductos(int idt)
     {
         List<Producto> prod = new List<Producto>();
@@ -142,4 +142,12 @@ public class ProductoService
 
 
     //
+}
+public interface IProductoService
+{
+    void CrearProd(ProductoDTO p);
+    ProductoIndividualDTO CambiarXId(ProductoCambioDTO x);
+    void BorrarXId (int id);
+    ProductoIndividualDTO ObtenerXId(int id);
+    List<Producto> GetAllProductos(int idt);
 }

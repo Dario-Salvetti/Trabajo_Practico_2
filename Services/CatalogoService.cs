@@ -1,10 +1,11 @@
 using Microsoft.Data.Sqlite;
 using TP2.Models;
 using TP2.DTOs;
+using TP2.Services;
 
 namespace TP2.Services;
 
-public class CatalogoService
+public class CatalogoService : ICatalogoService
 {
     private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
     public void NuevaCat (CatalogoDTO c)
@@ -81,7 +82,7 @@ public class CatalogoService
         return new CatalogoDTO()
         {
             Tipo = ObtenerNombreXid(id),
-            Prods = _productoService.GetAllProductos(id)
+            Prods = _productoService.Value.GetAllProductos(id)
         };
     }
 
@@ -104,10 +105,21 @@ public class CatalogoService
         return catalogos;
     }
 
-    private readonly ProductoService _productoService;
+    private readonly Lazy<IProductoService> _productoService;
 
-    public CatalogoService(ProductoService productoService)
+    public CatalogoService(Lazy<IProductoService> productoService)
     {
          _productoService = productoService;
     }
+}
+
+
+public interface ICatalogoService
+{
+    void NuevaCat (CatalogoDTO c);
+    List<Catalogo> GetCatalogos();
+    void BorrarCatalogos(int id);
+    string ObtenerNombreXid(int id);
+    CatalogoDTO EnCatalogoXId(int id);
+    List<CatalogoDTO> EnTodosCatalogos();
 }

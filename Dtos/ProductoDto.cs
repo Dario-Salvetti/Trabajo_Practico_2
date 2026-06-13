@@ -17,3 +17,10 @@ public class ProductoIndividualDTO
     public int Stock {get; set;}
     public int Precio {get; set;}
 }
+public class ProductoCambioDTO
+{
+    public int Id {get; set;}
+    public int Precio {get; set;} = 0;
+    public int Stock {get; set;} = 0;
+    public int Categoria {get; set;} = 0;
+}

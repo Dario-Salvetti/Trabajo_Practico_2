@@ -8,9 +8,9 @@ namespace TP_2.Controllers;
 [Route("[controller]")]
 public class CatalogoController : ControllerBase
 {
-    private readonly CatalogoService _catalogoService;
+    private readonly ICatalogoService _catalogoService;
 
-    public CatalogoController(CatalogoService catalogoService)
+    public CatalogoController(ICatalogoService catalogoService)
     {
         _catalogoService = catalogoService;
     }
@@ -32,5 +32,19 @@ public class CatalogoController : ControllerBase
     {
         _catalogoService.BorrarCatalogos(id);
     }
+    [HttpGet("{id}")]
+    public string Get(int id)
+    {
+        return _catalogoService.ObtenerNombreXid(id);
+    }
+    [HttpGet("{id}/Productos")]
+    public CatalogoDTO GetProductos(int id)
+    {
+        return _catalogoService.EnCatalogoXId(id);
+    }
+    [HttpGet("Productos")]
+    public List<CatalogoDTO> GetProductos()
+    {
+        return _catalogoService.EnTodosCatalogos();
+    }   
 }
-//estoy en mati rama
