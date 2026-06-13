@@ -8,3 +8,12 @@ public class ProductoDTO
     public int Stock {get; set;} = 0;
     public int Precio {get; set;} = 0;
 }
+
+public class ProductoIndividualDTO
+{
+    public int Id {get; set;}
+    public string Categoria {get; set;}
+    public string Nombre {get; set;}
+    public int Stock {get; set;}
+    public int Precio {get; set;}
+}
