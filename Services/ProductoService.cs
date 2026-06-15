@@ -88,15 +88,4 @@ public class ProductoService
     }
 
     
-
-
-    //
 }
-/*public interface IProductoService
-{
-    void CrearProd(ProductoDTO p);
-    ProductoIndividualDTO CambiarXId(ProductoCambioDTO x);
-    void BorrarXId (int id);
-    ProductoIndividualDTO ObtenerXId(int id);
-    List<Producto> GetAllProductos(int idt);
-}*/

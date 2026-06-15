@@ -12,12 +12,12 @@ public class AuxiliarService
     {
         List<Producto> prod = new List<Producto>();
 
-        using var conexion = new SqliteConnection(_rutaBaseDedatos);
+        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
 
         conexion.Open();
 
         using var comando = conexion.CreateCommand();
-        comando.CommandText = "SELECT Id, Nombre, Stock, Precio FROM Productos WHERE IdTipo = $idt;";
+        comando.CommandText = "SELECT Id, Nombre, Stock, Precio, IdTipo FROM Productos WHERE IdTipo = $idt;";
 
         comando.Parameters.AddWithValue("$idt", idt);
         using var res = comando.ExecuteReader();
@@ -43,7 +43,7 @@ public class AuxiliarService
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "SELECT Id, IdTipo, Nombre, Stock, Precio FROM Productos WHERE Id = $id;";
+        comando.CommandText = "SELECT Id, Nombre, Precio, Stock, IdTipo FROM Productos WHERE Id = $id;";
 
         comando.Parameters.AddWithValue("$id", id);
 
@@ -70,7 +70,7 @@ public class AuxiliarService
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "SELECT Tipo FROM Catalogo WHERE Id = $id;";
+        comando.CommandText = "SELECT Id, Tipo FROM Catalogo WHERE Id = $id;";
         comando.Parameters.AddWithValue("$id", id);
 
         using var leer = comando.ExecuteReader();
