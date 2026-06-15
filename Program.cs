@@ -28,7 +28,7 @@ crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Productos(
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
     Nombre TEXT NOT NULL,
     Precio INTEGER NOT NULL,
-    Stock INTEGER NOT NULL,
+    Stock INTEGER NOT NULL CHECK (Stock >= 0),
     IdTipo INTEGER NOT NULL,
     FOREIGN KEY (IdTipo) REFERENCES Catalogo(Id)
 );";
