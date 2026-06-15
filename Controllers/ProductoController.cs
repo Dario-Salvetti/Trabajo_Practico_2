@@ -15,16 +15,16 @@ public class ProductoController : ControllerBase
         _productoService = productoService;
     }
 
-    [HttpPost]
+    [HttpPost("{idt}")]
     public void Post(ProductoDTO p, int idt)
     {
         _productoService.CrearProd(p, idt);
     }
 
     [HttpPut]
-     public void Cambiar(ProductoCambioDTO x)
+     public ProductoIndividualDTO Cambiar(ProductoCambioDTO x)
     {
-        _productoService.CambiarXId(x);
+       return _productoService.CambiarXId(x);
     }
     [HttpDelete("{id}")]
     public void Delete(int id)
@@ -32,9 +32,9 @@ public class ProductoController : ControllerBase
         _productoService.BorrarXId(id);
     }
     [HttpGet("{id}")]
-    public void Obtener(int id)
+    public ProductoIndividualDTO Obtener(int id)
     {
-        _productoService.ObtenerXId(id);
+        return _productoService.ObtenerXId(id);
     }
 
 }

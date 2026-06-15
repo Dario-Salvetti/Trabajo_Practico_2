@@ -103,13 +103,3 @@ public class CatalogoService
 }
 
 
-/*public interface ICatalogoService
-{
-    void NuevaCat (CatalogoDTO c);
-    List<Catalogo> GetCatalogos();
-    void BorrarCatalogos(int id);
-    string ObtenerNombreXid(int id);
-    CatalogoDTO EnCatalogoXId(int id);
-    List<CatalogoDTO> EnTodosCatalogos();
-}
-*/
