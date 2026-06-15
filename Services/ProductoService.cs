@@ -43,8 +43,8 @@ public class ProductoService
         if (x.Stock != 0)
         {
             comando.Parameters.Clear();
-            comando.CommandText = "UPDATE Productos SET Stock = (Stock - $stock) WHERE Id = $id;";
-
+            
+            comando.CommandText = "UPDATE Productos SET Stock = Stock - $stock WHERE Id = $id AND Stock >= $stock;";
             comando.Parameters.AddWithValue("$stock", x.Stock);
             comando.Parameters.AddWithValue("$id", x.Id);
 
