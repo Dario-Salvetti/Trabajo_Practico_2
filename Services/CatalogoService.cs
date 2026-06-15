@@ -8,16 +8,22 @@ namespace TP2.Services;
 public class CatalogoService
 {
     private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
-    public void NuevaCat (CatalogoDTO c)
+    public void NuevaCat (CrearCatalogoDTO c)
     {
         using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = @"
-            INSERT INTO Catalogo (Tipo) VALUES ($tipo);
-        ";
-
+            
+            INSERT INTO Catalogo (Tipo)
+            SELECT $tipo
+            WHERE NOT EXISTS (
+                SELECT 1 
+                FROM Catalogo 
+                WHERE LOWER(Tipo) = LOWER($tipo)
+            );
+            ";
         comando.Parameters.AddWithValue("$tipo", c.Tipo);
 
         comando.ExecuteNonQuery();
