@@ -75,12 +75,6 @@ public class ProductoService
         comando.Parameters.AddWithValue("$id",id);
         comando.ExecuteNonQuery();
     }
-    
-    public List<Producto> GetAllProductos(int idt)
-    {
-        return _auxiliarservice.GetAllProductos(idt);
-    }
-
     public ProductoIndividualDTO ObtenerXId(int id)
     {
         return _auxiliarservice.ObtenerXId(id);
