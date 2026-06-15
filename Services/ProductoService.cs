@@ -1,6 +1,7 @@
 using Microsoft.Data.Sqlite;
 using TP2.Models;
 using TP2.DTOs;
+using TP2.Services;
 
 namespace TP2.Services;
 
@@ -13,8 +14,7 @@ public class ProductoService
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = @"
-            INSERT INTO Productos (Nombre, Stock, Precio) VALUES ($n, $s, $p);";
+        comando.CommandText = "INSERT INTO Productos (Nombre, Stock, Precio) VALUES ($n, $s, $p);";
         
         comando.Parameters.AddWithValue("$n", p.Marca+" "+p.Nombre+" "+p.Presentacion);
         comando.Parameters.AddWithValue("$s", p.Stock);
@@ -22,31 +22,87 @@ public class ProductoService
 
         comando.ExecuteNonQuery();
     }
-    
-    public List<Producto> GetAllProductos()
+
+    public ProductoIndividualDTO CambiarXId(ProductoCambioDTO x)
     {
-        List<Producto> prod = new List<Producto>();
-
-        using var conexion = new SqliteConnection(_rutaBaseDedatos);
-
+        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
         conexion.Open();
-
         using var comando = conexion.CreateCommand();
-        comando.CommandText = "SELECT Id, Nombre, Stock, Precio FROM Productos";
-        using var res = comando.ExecuteReader();
-        
-        while (res.Read())
-        {
-            prod.Add(new Producto
-            {
-                Id = res.GetInt32(0),
-                Nombre = res.GetString(1),
-                Stock = res.GetInt32(2),
-                Precio = res.GetInt32(3)
 
-            });
+        if (x.Precio > 0)
+        {
+            comando.Parameters.Clear();
+            comando.CommandText = "UPDATE Productos SET Precio = $precio WHERE Id = $id;";
+
+            comando.Parameters.AddWithValue("$precio", x.Precio);
+            comando.Parameters.AddWithValue("$id", x.Id);
+
+            comando.ExecuteNonQuery();
+        }
+        
+        if (x.Stock != 0)
+        {
+            comando.Parameters.Clear();
+            comando.CommandText = "UPDATE Productos SET Stock = (Stock - $stock) WHERE Id = $id;";
+
+            comando.Parameters.AddWithValue("$stock", x.Stock);
+            comando.Parameters.AddWithValue("$id", x.Id);
+
+            comando.ExecuteNonQuery();
         }
 
-        return prod;
+        if (x.Categoria > 0)
+        {
+            comando.Parameters.Clear();
+            comando.CommandText = "UPDATE Productos SET IdTipo = $cate WHERE Id = $id;";
+
+            comando.Parameters.AddWithValue("$cate", x.Categoria);
+            comando.Parameters.AddWithValue("$id", x.Id);
+
+            comando.ExecuteNonQuery();
+        }
+
+        return _auxiliarservice.ObtenerXId(x.Id);
     }
+
+    public void BorrarXId (int id)
+    {
+        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
+        conexion.Open();
+        using var comando = conexion.CreateCommand();
+
+        comando.CommandText = "DELETE FROM Productos WHERE Id = $id;";
+        comando.Parameters.AddWithValue("$id",id);
+        comando.ExecuteNonQuery();
+    }
+    
+    public List<Producto> GetAllProductos(int idt)
+    {
+        return _auxiliarservice.GetAllProductos(idt);
+    }
+
+    public ProductoIndividualDTO ObtenerXId(int id)
+    {
+        return _auxiliarservice.ObtenerXId(id);
+    }
+
+    private readonly AuxiliarService _auxiliarservice;
+
+    public ProductoService(AuxiliarService auxiliarservice)
+    {
+         _auxiliarservice = auxiliarservice;
+    }
+
+    
+
+
+    //
 }
+/*public interface IProductoService
+{
+    void CrearProd(ProductoDTO p);
+    ProductoIndividualDTO CambiarXId(ProductoCambioDTO x);
+    void BorrarXId (int id);
+    ProductoIndividualDTO ObtenerXId(int id);
+    List<Producto> GetAllProductos(int idt);
+}*/
