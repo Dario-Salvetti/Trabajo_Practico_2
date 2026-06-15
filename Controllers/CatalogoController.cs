@@ -16,7 +16,7 @@ public class CatalogoController : ControllerBase
     }
 
     [HttpPost]
-    public void Post(CatalogoDTO c)
+    public void Post(CrearCatalogoDTO c)
     {
         _catalogoService.NuevaCat(c);
     }

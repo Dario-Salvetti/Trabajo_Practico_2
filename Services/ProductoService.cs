@@ -8,18 +8,18 @@ namespace TP2.Services;
 public class ProductoService
 {
     private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
-    public void CrearProd(ProductoDTO p)
+    public void CrearProd(ProductoDTO p, int idt)
     {
         using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "INSERT INTO Productos (Nombre, Stock, Precio) VALUES ($n, $s, $p);";
+        comando.CommandText = "INSERT INTO Productos (Nombre, Stock, Precio, IdTipo) VALUES ($n, $s, $p, $idt);";
         
         comando.Parameters.AddWithValue("$n", p.Marca+" "+p.Nombre+" "+p.Presentacion);
         comando.Parameters.AddWithValue("$s", p.Stock);
         comando.Parameters.AddWithValue("$p", p.Precio);
-
+        comando.Parameters.AddWithValue("$idt", idt);
         comando.ExecuteNonQuery();
     }
 
