@@ -14,10 +14,10 @@ public class ProductoController : ControllerBase
         _productoService = productoService;
     }
 
-    [HttpPost("{idt}")]
-    public void Post(ProductoDTO p, int idt)
+    [HttpPost("{idc}")]
+    public void Post(ProductoDTO p, int idc)
     {
-        _productoService.CrearProd(p, idt);
+        _productoService.CrearProd(p, idc);
     }
 
     [HttpPut]
