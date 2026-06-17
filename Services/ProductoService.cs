@@ -8,18 +8,18 @@ namespace TP2.Services;
 public class ProductoService
 {
     private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
-    public void CrearProd(ProductoDTO p, int idt)
+    public void CrearProd(ProductoDTO p, int idc)
     {
         using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "INSERT INTO Productos (Nombre, Stock, Precio, IdTipo) VALUES ($n, $s, $p, $idt);";
+        comando.CommandText = "INSERT INTO Productos (Nombre, Stock, Precio, IdCatalogo) VALUES ($n, $s, $p, $idc);";
         
         comando.Parameters.AddWithValue("$n", p.Marca+" "+p.Nombre+" "+p.Presentacion);
         comando.Parameters.AddWithValue("$s", p.Stock);
         comando.Parameters.AddWithValue("$p", p.Precio);
-        comando.Parameters.AddWithValue("$idt", idt);
+        comando.Parameters.AddWithValue("$idc", idc);
         comando.ExecuteNonQuery();
     }
 
@@ -51,12 +51,12 @@ public class ProductoService
             comando.ExecuteNonQuery();
         }
 
-        if (x.Categoria > 0)
+        if (x.Catalogo > 0)
         {
             comando.Parameters.Clear();
-            comando.CommandText = "UPDATE Productos SET IdTipo = $cate WHERE Id = $id;";
+            comando.CommandText = "UPDATE Productos SET IdCatalogo = $cata WHERE Id = $id;";
 
-            comando.Parameters.AddWithValue("$cate", x.Categoria);
+            comando.Parameters.AddWithValue("$cata", x.Catalogo);
             comando.Parameters.AddWithValue("$id", x.Id);
 
             comando.ExecuteNonQuery();

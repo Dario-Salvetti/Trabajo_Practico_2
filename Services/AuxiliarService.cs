@@ -8,7 +8,7 @@ public class AuxiliarService
 {
     private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
 
-    public List<Producto> GetAllProductos(int idt)
+    public List<Producto> GetAllProductos(int idc)
     {
         List<Producto> prod = new List<Producto>();
 
@@ -17,9 +17,9 @@ public class AuxiliarService
         conexion.Open();
 
         using var comando = conexion.CreateCommand();
-        comando.CommandText = "SELECT Id, Nombre, Stock, Precio, IdTipo FROM Productos WHERE IdTipo = $idt;";
+        comando.CommandText = "SELECT Id, Nombre, Stock, Precio, IdCatalogo FROM Productos WHERE IdCatalogo = $idc;";
 
-        comando.Parameters.AddWithValue("$idt", idt);
+        comando.Parameters.AddWithValue("$idc", idc);
         using var res = comando.ExecuteReader();
         
         while (res.Read())
@@ -43,7 +43,7 @@ public class AuxiliarService
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "SELECT Id, Nombre, Precio, Stock, IdTipo FROM Productos WHERE Id = $id;";
+        comando.CommandText = "SELECT Id, Nombre, Precio, Stock, IdCatalogo FROM Productos WHERE Id = $id;";
 
         comando.Parameters.AddWithValue("$id", id);
 
@@ -57,7 +57,7 @@ public class AuxiliarService
                 Nombre = leer.GetString(1),
                 Precio = leer.GetInt32(2),
                 Stock = leer.GetInt32(3),
-                Categoria = ObtenerNombreXid(leer.GetInt32(4))
+                Catalogo = ObtenerNombreXid(leer.GetInt32(4))
             };
         }
 
@@ -70,7 +70,7 @@ public class AuxiliarService
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "SELECT Id, Tipo FROM Catalogo WHERE Id = $id;";
+        comando.CommandText = "SELECT Id, Catalogo FROM Catalogo WHERE Id = $id;";
         comando.Parameters.AddWithValue("$id", id);
 
         using var leer = comando.ExecuteReader();
@@ -87,8 +87,8 @@ public class AuxiliarService
         
         return new CatalogoDTO()
         {
-            Tipo = ObtenerNombreXid(id),
-            Prods = GetAllProductos(id)
+            Catalogo = ObtenerNombreXid(id),
+            Productos = GetAllProductos(id)
         };
     }
 
