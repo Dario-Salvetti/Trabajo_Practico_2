@@ -34,6 +34,6 @@ En esta guia podra ver los endpoints de la Api
 
 
     *id: es el identificador de categoria o producto segun corresponda en formato numero
-    El puerto (localhost: numero) puede cambiar segun la Pc donde se ejecute la API
+    El puerto (localhost: xxxx) puede cambiar segun la Pc donde se ejecute la API
       
     
