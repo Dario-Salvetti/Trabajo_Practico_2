@@ -57,7 +57,7 @@ public class AuxiliarService
                 Nombre = leer.GetString(1),
                 Precio = leer.GetInt32(2),
                 Stock = leer.GetInt32(3),
-                Catalogo = ObtenerNombreXid(leer.GetInt32(4))
+                CatalogoNombre = ObtenerNombreXid(leer.GetInt32(4))
             };
         }
 
@@ -70,7 +70,7 @@ public class AuxiliarService
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "SELECT Id, Catalogo FROM Catalogo WHERE Id = $id;";
+        comando.CommandText = "SELECT Id, CatalogoNombre FROM Catalogo WHERE Id = $id;";
         comando.Parameters.AddWithValue("$id", id);
 
         using var leer = comando.ExecuteReader();
@@ -87,7 +87,7 @@ public class AuxiliarService
         
         return new CatalogoDTO()
         {
-            Catalogo = ObtenerNombreXid(id),
+            CatalogoNombre = ObtenerNombreXid(id),
             Productos = GetAllProductos(id)
         };
     }

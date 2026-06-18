@@ -16,15 +16,15 @@ public class CatalogoService
 
         comando.CommandText = @"
             
-            INSERT INTO Catalogo (Catalogo)
+            INSERT INTO Catalogo (CatalogoNombre)
             SELECT $catalogo
             WHERE NOT EXISTS (
                 SELECT 1 
                 FROM Catalogo 
-                WHERE LOWER(Catalogo) = LOWER($catalogo)
+                WHERE LOWER(CatalogoNombre) = LOWER($catalogo)
             );
             ";
-        comando.Parameters.AddWithValue("$catalogo", c.Catalogo);
+        comando.Parameters.AddWithValue("$catalogo", c.CatalogoNombre);
 
         comando.ExecuteNonQuery();
     }
@@ -47,7 +47,7 @@ public class CatalogoService
         conexion.Open();
         using var comando = conexion.CreateCommand();
 
-        comando.CommandText = "SELECT Id, Catalogo FROM Catalogo;";
+        comando.CommandText = "SELECT Id, CatalogoNombre FROM Catalogo;";
         using var res = comando.ExecuteReader();
 
         while (res.Read())
@@ -55,7 +55,7 @@ public class CatalogoService
             catalogos.Add(new Catalogo
             {
                 IdCatalogo = res.GetInt32(0),
-                Catalogo = res.GetString(1)
+                CatalogoNombre = res.GetString(1)
 
             });
         }

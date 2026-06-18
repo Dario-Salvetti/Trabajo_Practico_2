@@ -12,7 +12,7 @@ En esta guia podra ver los endpoints de la Api
    POST http://localhost:5047/Catalogo/
    Ejemplo de JSON:
    {
-      "Catalogo":"nombre del nuevo catalogo"
+      "CatalogoNombre":"nombre del nuevo catalogo"
    }
    
 4. Ver productos dentro de un catalogo
@@ -42,7 +42,7 @@ En esta guia podra ver los endpoints de la Api
       "Id": Id del producto,
       "Precio": nuevo precio del producto,
       "Stock": cantidad a restar del producto (para agregar usar numeros negativos),
-      "Catalogo": Id del nuevo catalogo en el que estara
+      "CatalogoNombre": Id del nuevo catalogo en el que estara
   }
 
 9. Eliminar un producto

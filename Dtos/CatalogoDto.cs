@@ -3,12 +3,12 @@ namespace TP2.DTOs;
 
 public class CatalogoDTO
 {
-    public string Catalogo {get; set;} = "";
+    public string CatalogoNombre {get; set;} = "";
     public List<Producto> Productos {get; set;}
 }
 
 public class CrearCatalogoDTO
 {
-    public string Catalogo {get; set;} = "";
+    public string CatalogoNombre {get; set;} = "";
     
 }
