@@ -51,12 +51,12 @@ public class ProductoService
             comando.ExecuteNonQuery();
         }
 
-        if (x.Catalogo > 0)
+        if (x.CatalogoNombre > 0)
         {
             comando.Parameters.Clear();
             comando.CommandText = "UPDATE Productos SET IdCatalogo = $cata WHERE Id = $id;";
 
-            comando.Parameters.AddWithValue("$cata", x.Catalogo);
+            comando.Parameters.AddWithValue("$cata", x.CatalogoNombre);
             comando.Parameters.AddWithValue("$id", x.Id);
 
             comando.ExecuteNonQuery();

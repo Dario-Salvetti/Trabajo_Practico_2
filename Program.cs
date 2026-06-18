@@ -21,7 +21,7 @@ Console.WriteLine("Conexion abierta");
 using var crearTabla = conexion.CreateCommand();
  crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Catalogo(
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Catalogo TEXT COLLATE NOCASE NOT NULL UNIQUE
+    CatalogoNombre TEXT COLLATE NOCASE NOT NULL UNIQUE
 );";
 crearTabla.ExecuteNonQuery();
 crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Productos(
