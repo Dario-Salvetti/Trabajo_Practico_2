@@ -1,14 +1,12 @@
 using Microsoft.Data.Sqlite;
-using TP2.Models;
 using TP2.DTOs;
-using TP2.Services;
 
 namespace TP2.Services;
 
 public class ProductoService
 {
     private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
-    public void CrearProd(ProductoDTO p, int idc)
+    public void CrearProd(ProductoDTO p)
     {
         using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
         conexion.Open();
@@ -19,7 +17,7 @@ public class ProductoService
         comando.Parameters.AddWithValue("$n", p.Marca+" "+p.Nombre+" "+p.Presentacion);
         comando.Parameters.AddWithValue("$s", p.Stock);
         comando.Parameters.AddWithValue("$p", p.Precio);
-        comando.Parameters.AddWithValue("$idc", idc);
+        comando.Parameters.AddWithValue("$idc", p.IdCatalogo);
         comando.ExecuteNonQuery();
     }
 
@@ -51,12 +49,12 @@ public class ProductoService
             comando.ExecuteNonQuery();
         }
 
-        if (x.CatalogoNombre > 0)
+        if (x.IdCatalogo > 0)
         {
             comando.Parameters.Clear();
             comando.CommandText = "UPDATE Productos SET IdCatalogo = $cata WHERE Id = $id;";
 
-            comando.Parameters.AddWithValue("$cata", x.CatalogoNombre);
+            comando.Parameters.AddWithValue("$cata", x.IdCatalogo);
             comando.Parameters.AddWithValue("$id", x.Id);
 
             comando.ExecuteNonQuery();

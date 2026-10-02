@@ -7,6 +7,7 @@ public class ProductoDTO
     public string Presentacion {get; set;} = "";
     public int Stock {get; set;} = 0;
     public int Precio {get; set;} = 0;
+    public int IdCatalogo {get; set;} = 0;
 }
 
 public class ProductoIndividualDTO
@@ -22,5 +23,5 @@ public class ProductoCambioDTO
     public int Id {get; set;}
     public int Precio {get; set;} = 0;
     public int Stock {get; set;} = 0;
-    public int CatalogoNombre {get; set;} = 0;
+    public int IdCatalogo {get; set;} = 0;
 }

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TP2.Services;
 using TP2.DTOs;
-using TP2.Models;
 namespace TP_2.Controllers;
 [ApiController]
 [Route("[controller]")]
@@ -14,10 +13,10 @@ public class ProductoController : ControllerBase
         _productoService = productoService;
     }
 
-    [HttpPost("{idc}")]
-    public void Post(ProductoDTO p, int idc)
+    [HttpPost]
+    public void Post(ProductoDTO p)
     {
-        _productoService.CrearProd(p, idc);
+        _productoService.CrearProd(p);
     }
 
     [HttpPut]
