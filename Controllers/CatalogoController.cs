@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TP2.Services;
 using TP2.DTOs;
-using TP2.Models;
 namespace TP_2.Controllers;
 
 [ApiController]
@@ -15,36 +14,27 @@ public class CatalogoController : ControllerBase
         _catalogoService = catalogoService;
     }
 
+    [HttpGet]
+    public List<CatalogoDTO> GetProductos()
+    {
+        return _catalogoService.EnTodosCatalogos();
+    }
+
+    [HttpGet("{id}")]
+    public CatalogoDTO GetProductos(int id)
+    {
+        return _catalogoService.EnCatalogoXId(id);
+    }
+
     [HttpPost]
     public void Post(CrearCatalogoDTO c)
     {
         _catalogoService.NuevaCat(c);
     }
 
-    [HttpGet]
-    public List<Catalogo> Get()
-    {
-        return _catalogoService.GetCatalogos();
-    }
-
     [HttpDelete("{id}")]
     public void Delete(int id)
     {
         _catalogoService.BorrarCatalogos(id);
-    }
-    [HttpGet("{id}")]
-    public string Get(int id)
-    {
-        return _catalogoService.ObtenerNombreXid(id);
-    }
-    [HttpGet("{id}/Productos")]
-    public CatalogoDTO GetProductos(int id)
-    {
-        return _catalogoService.EnCatalogoXId(id);
-    }
-    [HttpGet("Productos")]
-    public List<CatalogoDTO> GetProductos()
-    {
-        return _catalogoService.EnTodosCatalogos();
     }   
 }

@@ -79,7 +79,7 @@ public class AuxiliarService
         {
             return leer.GetString(1);
         };
-        return null;
+        return "no existe";
     }
 
     public CatalogoDTO EnCatalogoXId(int id)
@@ -87,6 +87,7 @@ public class AuxiliarService
         
         return new CatalogoDTO()
         {
+            IdCatalogo = id,
             CatalogoNombre = ObtenerNombreXid(id),
             Productos = GetAllProductos(id)
         };

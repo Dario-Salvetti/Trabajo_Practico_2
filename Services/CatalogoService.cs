@@ -1,7 +1,5 @@
 using Microsoft.Data.Sqlite;
-using TP2.Models;
 using TP2.DTOs;
-using TP2.Services;
 
 namespace TP2.Services;
 
@@ -29,52 +27,11 @@ public class CatalogoService
         comando.ExecuteNonQuery();
     }
 
-    public string ObtenerNombreXid(int id)
-    {
-        return _auxiliarservice.ObtenerNombreXid(id);
-    }
-
     public CatalogoDTO EnCatalogoXId(int id)
     {
         return _auxiliarservice.EnCatalogoXId(id);
     }
 
-    public List<Catalogo> GetCatalogos()
-    {
-        List<Catalogo> catalogos = new List<Catalogo>();
-
-        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
-        conexion.Open();
-        using var comando = conexion.CreateCommand();
-
-        comando.CommandText = "SELECT Id, CatalogoNombre FROM Catalogo;";
-        using var res = comando.ExecuteReader();
-
-        while (res.Read())
-        {
-            catalogos.Add(new Catalogo
-            {
-                IdCatalogo = res.GetInt32(0),
-                CatalogoNombre = res.GetString(1)
-
-            });
-        }
-
-        return catalogos;
-    }
-
-    public void BorrarCatalogos(int id)
-    {
-        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
-        conexion.Open();
-        using var comando = conexion.CreateCommand();
-
-        comando.CommandText = "DELETE FROM Catalogo WHERE Id = $id;";
-        comando.Parameters.AddWithValue("$id",id);
-        comando.ExecuteNonQuery();
-    }
-
-    
     public List<CatalogoDTO> EnTodosCatalogos()
     {
         List<CatalogoDTO> catalogos = new List<CatalogoDTO>();
@@ -92,6 +49,17 @@ public class CatalogoService
         }
 
         return catalogos;
+    }
+
+    public void BorrarCatalogos(int id)
+    {
+        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
+        conexion.Open();
+        using var comando = conexion.CreateCommand();
+
+        comando.CommandText = "DELETE FROM Catalogo WHERE Id = $id;";
+        comando.Parameters.AddWithValue("$id",id);
+        comando.ExecuteNonQuery();
     }
 
     private readonly AuxiliarService _auxiliarservice;
