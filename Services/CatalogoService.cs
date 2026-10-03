@@ -1,15 +1,18 @@
 using Microsoft.Data.Sqlite;
 using TP2.DTOs;
-
+using Utils;
 namespace TP2.Services;
 
 public class CatalogoService
 {
-    private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
+    private SqliteConnection ObtenerConexion()
+    {
+        var conexion = new UtilsDB().CrearConexion();
+        return conexion;
+    }
     public void NuevaCat (CrearCatalogoDTO c)
     {
-        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
-        conexion.Open();
+        using var conexion = ObtenerConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = @"
@@ -36,8 +39,7 @@ public class CatalogoService
     {
         List<CatalogoDTO> catalogos = new List<CatalogoDTO>();
 
-        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
-        conexion.Open();
+        using var conexion = ObtenerConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "SELECT Id FROM Catalogo;";
@@ -53,8 +55,7 @@ public class CatalogoService
 
     public void BorrarCatalogos(int id)
     {
-        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
-        conexion.Open();
+        using var conexion = ObtenerConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "DELETE FROM Catalogo WHERE Id = $id;";

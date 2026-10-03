@@ -1,21 +1,21 @@
 using Microsoft.Data.Sqlite;
 using TP2.Models;
 using TP2.DTOs;
-
+using Utils;
 namespace TP2.Services;
 
 public class AuxiliarService
 {
-    private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
+    private SqliteConnection ObtenerConexion()
+    {
+        var conexion = new UtilsDB().CrearConexion();
+        return conexion;
+    }
 
     public List<Producto> GetAllProductos(int idc)
     {
         List<Producto> prod = new List<Producto>();
-
-        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
-
-        conexion.Open();
-
+        using var conexion = ObtenerConexion();
         using var comando = conexion.CreateCommand();
         comando.CommandText = "SELECT Id, Nombre, Stock, Precio, IdCatalogo FROM Productos WHERE IdCatalogo = $idc;";
 
@@ -38,9 +38,7 @@ public class AuxiliarService
     }
     public ProductoIndividualDTO ObtenerXId(int id)
     {
-        
-        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
-        conexion.Open();
+        using var conexion = ObtenerConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "SELECT Id, Nombre, Precio, Stock, IdCatalogo FROM Productos WHERE Id = $id;";
@@ -66,8 +64,7 @@ public class AuxiliarService
 
     public string ObtenerNombreXid(int id)
     {
-        using var conexion = new SqliteConnection($"Data Source={_rutaBaseDedatos}");
-        conexion.Open();
+        using var conexion = ObtenerConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "SELECT Id, CatalogoNombre FROM Catalogo WHERE Id = $id;";
@@ -84,7 +81,6 @@ public class AuxiliarService
 
     public CatalogoDTO EnCatalogoXId(int id)
     {
-        
         return new CatalogoDTO()
         {
             IdCatalogo = id,

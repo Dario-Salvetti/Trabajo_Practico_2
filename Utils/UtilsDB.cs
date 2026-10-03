@@ -2,11 +2,11 @@ using Microsoft.Data.Sqlite;
 namespace Utils
 
 {
-    public static class UtilsDB
+    public class UtilsDB
     {
-        public static SqliteConnection CrearConexion()
+        public SqliteConnection CrearConexion()
         {
-            var conexion = new SqliteConnection("BasesDatos/BDProductos.db");
+            var conexion = new SqliteConnection("Data Source=BasesDatos/BDProductos.db");
             conexion.Open();
             return conexion;
         }
