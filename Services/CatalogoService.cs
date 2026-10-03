@@ -10,7 +10,6 @@ public class CatalogoService
         var conexion = new UtilsDB().CrearConexion();
         return conexion;
     }
-    private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
     public void NuevaCat (CrearCatalogoDTO c)
     {
         using var conexion = ObtenerConexion();

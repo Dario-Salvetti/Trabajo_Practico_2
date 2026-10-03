@@ -10,7 +10,6 @@ public class ProductoService
         var conexion = new UtilsDB().CrearConexion();
         return conexion;
     }
-    private readonly string _rutaBaseDedatos= "BasesDatos/BDProductos.db";
     public void CrearProd(ProductoDTO p)
     {
         using var conexion = ObtenerConexion();
