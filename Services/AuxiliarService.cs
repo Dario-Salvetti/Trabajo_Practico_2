@@ -5,17 +5,10 @@ using Utils;
 namespace TP2.Services;
 
 public class AuxiliarService
-{
-    private SqliteConnection ObtenerConexion()
-    {
-        var conexion = new UtilsDB().CrearConexion();
-        return conexion;
-    }
-
-    public List<Producto> GetAllProductos(int idc)
+{    public List<Producto> GetAllProductos(int idc)
     {
         List<Producto> prod = new List<Producto>();
-        using var conexion = ObtenerConexion();
+        using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
         comando.CommandText = "SELECT Id, Nombre, Stock, Precio, IdCatalogo FROM Productos WHERE IdCatalogo = $idc;";
 
@@ -38,7 +31,7 @@ public class AuxiliarService
     }
     public ProductoIndividualDTO ObtenerXId(int id)
     {
-        using var conexion = ObtenerConexion();
+        using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "SELECT Id, Nombre, Precio, Stock, IdCatalogo FROM Productos WHERE Id = $id;";
@@ -64,7 +57,7 @@ public class AuxiliarService
 
     public string ObtenerNombreXid(int id)
     {
-        using var conexion = ObtenerConexion();
+        using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "SELECT Id, CatalogoNombre FROM Catalogo WHERE Id = $id;";
