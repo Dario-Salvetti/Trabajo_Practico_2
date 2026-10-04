@@ -5,14 +5,9 @@ namespace TP2.Services;
 
 public class CatalogoService
 {
-    private SqliteConnection ObtenerConexion()
-    {
-        var conexion = new UtilsDB().CrearConexion();
-        return conexion;
-    }
     public void NuevaCat (CrearCatalogoDTO c)
     {
-        using var conexion = ObtenerConexion();
+        using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = @"
@@ -39,7 +34,7 @@ public class CatalogoService
     {
         List<CatalogoDTO> catalogos = new List<CatalogoDTO>();
 
-        using var conexion = ObtenerConexion();
+        using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "SELECT Id FROM Catalogo;";
@@ -55,7 +50,7 @@ public class CatalogoService
 
     public void BorrarCatalogos(int id)
     {
-        using var conexion = ObtenerConexion();
+        using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "DELETE FROM Catalogo WHERE Id = $id;";

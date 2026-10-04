@@ -4,15 +4,9 @@ using Utils;
 namespace TP2.Services;
 
 public class ProductoService
-{
-    private SqliteConnection ObtenerConexion()
+{    public void CrearProd(ProductoDTO p)
     {
-        var conexion = new UtilsDB().CrearConexion();
-        return conexion;
-    }
-    public void CrearProd(ProductoDTO p)
-    {
-        using var conexion = ObtenerConexion();
+        using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "INSERT INTO Productos (Nombre, Stock, Precio, IdCatalogo) VALUES ($n, $s, $p, $idc);";
@@ -26,7 +20,7 @@ public class ProductoService
 
     public ProductoIndividualDTO CambiarXId(ProductoCambioDTO x)
     {
-        using var conexion = ObtenerConexion();
+        using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
 
         if (x.Precio > 0)
@@ -67,7 +61,7 @@ public class ProductoService
 
     public void BorrarXId (int id)
     {
-        using var conexion = ObtenerConexion();
+        using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "DELETE FROM Productos WHERE Id = $id;";
