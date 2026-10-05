@@ -5,7 +5,7 @@ namespace TP2.Services;
 
 public class CatalogoService
 {
-    public void NuevaCat (CrearCatalogoDTO c)
+    public void CrearCatalogo (CrearCatalogoDTO c)
     {
         using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
