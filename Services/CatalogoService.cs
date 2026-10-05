@@ -25,9 +25,9 @@ public class CatalogoService
         comando.ExecuteNonQuery();
     }
 
-    public CatalogoDTO EnCatalogoXId(int id)
+    public CatalogoDTO EnCatalogoPorId(int id)
     {
-        return _auxiliarservice.EnCatalogoXId(id);
+        return _auxiliarservice.EnCatalogoPorId(id);
     }
 
     public List<CatalogoDTO> EnTodosCatalogos()
@@ -42,13 +42,13 @@ public class CatalogoService
 
         while (res.Read())
         {
-            catalogos.Add(_auxiliarservice.EnCatalogoXId(res.GetInt32(0)));
+            catalogos.Add(_auxiliarservice.EnCatalogoPorId(res.GetInt32(0)));
         }
 
         return catalogos;
     }
 
-    public void BorrarCatalogos(int id)
+    public void BorrarCatalogo(int id)
     {
         using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();

@@ -18,7 +18,7 @@ public class ProductoService
         comando.ExecuteNonQuery();
     }
 
-    public ProductoIndividualDTO CambiarXId(ProductoCambioDTO x)
+    public ProductoIndividualDTO CambiarPorId(ProductoCambioDTO x, int id)
     {
         using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
@@ -29,7 +29,7 @@ public class ProductoService
             comando.CommandText = "UPDATE Productos SET Precio = $precio WHERE Id = $id;";
 
             comando.Parameters.AddWithValue("$precio", x.Precio);
-            comando.Parameters.AddWithValue("$id", x.Id);
+            comando.Parameters.AddWithValue("$id", id);
 
             comando.ExecuteNonQuery();
         }
@@ -40,7 +40,7 @@ public class ProductoService
             
             comando.CommandText = "UPDATE Productos SET Stock = Stock - $stock WHERE Id = $id AND Stock >= $stock;";
             comando.Parameters.AddWithValue("$stock", x.Stock);
-            comando.Parameters.AddWithValue("$id", x.Id);
+            comando.Parameters.AddWithValue("$id", id);
 
             comando.ExecuteNonQuery();
         }
@@ -51,15 +51,15 @@ public class ProductoService
             comando.CommandText = "UPDATE Productos SET IdCatalogo = $cata WHERE Id = $id;";
 
             comando.Parameters.AddWithValue("$cata", x.IdCatalogo);
-            comando.Parameters.AddWithValue("$id", x.Id);
+            comando.Parameters.AddWithValue("$id", id);
 
             comando.ExecuteNonQuery();
         }
 
-        return _auxiliarservice.ObtenerXId(x.Id);
+        return _auxiliarservice.ObtenerPorId(id);
     }
 
-    public void BorrarXId (int id)
+    public void BorrarPorId (int id)
     {
         using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
@@ -68,9 +68,9 @@ public class ProductoService
         comando.Parameters.AddWithValue("$id",id);
         comando.ExecuteNonQuery();
     }
-    public ProductoIndividualDTO ObtenerXId(int id)
+    public ProductoIndividualDTO ObtenerPorId(int id)
     {
-        return _auxiliarservice.ObtenerXId(id);
+        return _auxiliarservice.ObtenerPorId(id);
     }
 
     private readonly AuxiliarService _auxiliarservice;

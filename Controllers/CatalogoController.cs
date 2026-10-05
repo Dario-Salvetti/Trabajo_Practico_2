@@ -23,7 +23,7 @@ public class CatalogoController : ControllerBase
     [HttpGet("{id}")]
     public CatalogoDTO GetProductos(int id)
     {
-        return _catalogoService.EnCatalogoXId(id);
+        return _catalogoService.EnCatalogoPorId(id);
     }
 
     [HttpPost]
@@ -35,6 +35,6 @@ public class CatalogoController : ControllerBase
     [HttpDelete("{id}")]
     public void Delete(int id)
     {
-        _catalogoService.BorrarCatalogos(id);
+        _catalogoService.BorrarCatalogo(id);
     }   
 }

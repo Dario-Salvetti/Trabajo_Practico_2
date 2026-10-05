@@ -31,10 +31,9 @@ En esta guia podra ver los endpoints de la Api
    }
   
 6. Cambiar un producto
-  PUT http://localhost:5047/Producto
+  PUT http://localhost:5047/Producto/id*
   Ejemplo de JSON:
   {
-      "Id": Id del producto,
       "Precio": nuevo precio del producto,
       "Stock": cantidad a restar del producto (para agregar usar numeros negativos),
       "CatalogoNombre": Id del nuevo catalogo en el que estara
@@ -49,5 +48,4 @@ En esta guia podra ver los endpoints de la Api
 
    *id: es el identificador de catalogo o producto segun corresponda en formato numero
    El puerto (localhost: xxxx) puede cambiar segun la Pc donde se ejecute la API
-   ** al crear un producto el id en la url debe ser el del catalogo en el que ira.
     
