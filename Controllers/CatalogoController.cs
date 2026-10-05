@@ -29,7 +29,7 @@ public class CatalogoController : ControllerBase
     [HttpPost]
     public void Post(CrearCatalogoDTO c)
     {
-        _catalogoService.NuevaCat(c);
+        _catalogoService.CrearCatalogo(c);
     }
 
     [HttpDelete("{id}")]
