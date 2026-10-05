@@ -19,20 +19,20 @@ public class ProductoController : ControllerBase
         _productoService.CrearProd(p);
     }
 
-    [HttpPut]
-     public ProductoIndividualDTO Cambiar(ProductoCambioDTO x)
+    [HttpPut("{id}")]
+     public ProductoIndividualDTO Cambiar(ProductoCambioDTO x, int id)
     {
-       return _productoService.CambiarXId(x);
+       return _productoService.CambiarPorId(x, id);
     }
     [HttpDelete("{id}")]
     public void Delete(int id)
     {
-        _productoService.BorrarXId(id);
+        _productoService.BorrarPorId(id);
     }
     [HttpGet("{id}")]
     public ProductoIndividualDTO Obtener(int id)
     {
-        return _productoService.ObtenerXId(id);
+        return _productoService.ObtenerPorId(id);
     }
 
 }

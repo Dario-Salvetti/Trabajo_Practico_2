@@ -12,7 +12,6 @@ public class ProductoDTO
 
 public class ProductoIndividualDTO
 {
-    public int Id {get; set;}
     public string CatalogoNombre {get; set;}
     public string Nombre {get; set;}
     public int Stock {get; set;}

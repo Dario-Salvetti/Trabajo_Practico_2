@@ -29,7 +29,7 @@ public class AuxiliarService
 
         return prod;
     }
-    public ProductoIndividualDTO ObtenerXId(int id)
+    public ProductoIndividualDTO ObtenerPorId(int id)
     {
         using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
@@ -44,18 +44,17 @@ public class AuxiliarService
         {
             return new ProductoIndividualDTO
             {
-                Id = leer.GetInt32(0),
                 Nombre = leer.GetString(1),
                 Precio = leer.GetInt32(2),
                 Stock = leer.GetInt32(3),
-                CatalogoNombre = ObtenerNombreXid(leer.GetInt32(4))
+                CatalogoNombre = ObtenerNombrePorId(leer.GetInt32(4))
             };
         }
 
         return null;
     }
 
-    public string ObtenerNombreXid(int id)
+    public string ObtenerNombrePorId(int id)
     {
         using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
@@ -72,12 +71,12 @@ public class AuxiliarService
         return "no existe";
     }
 
-    public CatalogoDTO EnCatalogoXId(int id)
+    public CatalogoDTO EnCatalogoPorId(int id)
     {
         return new CatalogoDTO()
         {
             IdCatalogo = id,
-            CatalogoNombre = ObtenerNombreXid(id),
+            CatalogoNombre = ObtenerNombrePorId(id),
             Productos = GetAllProductos(id)
         };
     }
