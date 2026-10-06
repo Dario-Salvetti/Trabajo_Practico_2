@@ -16,23 +16,24 @@ var app = builder.Build();
 string rutaBaseDedatos= "BasesDatos/BDProductos.db";
 using var conexion = new SqliteConnection($"Data Source={rutaBaseDedatos}");
 conexion.Open();
-Console.WriteLine("Conexion abierta");
-using var crearTabla = conexion.CreateCommand();
- crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Catalogo(
-    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    CatalogoNombre TEXT COLLATE NOCASE NOT NULL UNIQUE
-);";
-crearTabla.ExecuteNonQuery();
-crearTabla.CommandText =@"CREATE TABLE IF NOT EXISTS Productos(
-    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Nombre TEXT NOT NULL,
-    Precio INTEGER NOT NULL,
-    Stock INTEGER NOT NULL CHECK (Stock >= 0),
-    IdCatalogo INTEGER NOT NULL,
-    FOREIGN KEY (IdCatalogo) REFERENCES Catalogo(Id)
-);";
+using var crearTablas = conexion.CreateCommand();
+crearTablas.CommandText = @"
+    CREATE TABLE IF NOT EXISTS Catalogo (
+        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+        CatalogoNombre TEXT COLLATE NOCASE NOT NULL UNIQUE
+    );
 
-crearTabla.ExecuteNonQuery();
+    CREATE TABLE IF NOT EXISTS Productos (
+        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+        Nombre TEXT NOT NULL,
+        Precio INTEGER NOT NULL,
+        Stock INTEGER NOT NULL CHECK (Stock >= 0),
+        IdCatalogo INTEGER NOT NULL,
+        FOREIGN KEY (IdCatalogo) REFERENCES Catalogo(Id)
+    );
+";
+
+crearTablas.ExecuteNonQuery();
 Console.WriteLine("Tablas creadas");
 
 
