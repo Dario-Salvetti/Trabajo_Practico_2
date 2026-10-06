@@ -4,7 +4,8 @@ using Utils;
 namespace TP2.Services;
 
 public class ProductoService
-{    public void CrearProd(ProductoDTO p)
+{
+    public void CrearProd(ProductoDTO p)
     {
         using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
@@ -18,45 +19,55 @@ public class ProductoService
         comando.ExecuteNonQuery();
     }
 
-    public ProductoIndividualDTO CambiarPorId(ProductoCambioDTO x, int id)
+    public ProductoIndividualDTO CambiarPorId(ProductoCambioDTO x, int id)//todos los if en un update (como lo queria hacer desde un inicio)
     {
         using var conexion = new UtilsDB().CrearConexion();
         using var comando = conexion.CreateCommand();
 
-        if (x.Precio > 0)
+        comando.CommandText = @"
+            UPDATE Productos 
+            SET Precio = CASE WHEN $precio > 0 THEN $precio ELSE Precio END,
+                Stock = CASE WHEN $stock != 0 AND Stock >= $stock THEN Stock - $stock ELSE Stock END,
+                IdCatalogo = CASE WHEN $cata > 0 THEN $cata ELSE IdCatalogo END
+            WHERE Id = $id;";
+
+        comando.Parameters.AddWithValue("$precio", x.Precio);
+        comando.Parameters.AddWithValue("$stock", x.Stock);
+        comando.Parameters.AddWithValue("$cata", x.IdCatalogo);
+        comando.Parameters.AddWithValue("$id", id);
+
+        comando.ExecuteNonQuery();
+
+        return ObtenerPorId(id);
+    }
+
+    public ProductoIndividualDTO ObtenerPorId(int id)//lo del left join que no conociamos que nos permite mirar dos tablas en la misma consulta
+    {
+        using var conexion = new UtilsDB().CrearConexion();
+        using var comando = conexion.CreateCommand();
+
+        comando.CommandText = @"
+            SELECT p.Nombre, p.Precio, p.Stock, COALESCE(c.CatalogoNombre, 'no existe')
+            FROM Productos p
+            LEFT JOIN Catalogo c ON p.IdCatalogo = c.Id
+            WHERE p.Id = $id;";
+
+        comando.Parameters.AddWithValue("$id", id);
+
+        using var leer = comando.ExecuteReader();
+
+        if (leer.Read())
         {
-            comando.Parameters.Clear();
-            comando.CommandText = "UPDATE Productos SET Precio = $precio WHERE Id = $id;";
-
-            comando.Parameters.AddWithValue("$precio", x.Precio);
-            comando.Parameters.AddWithValue("$id", id);
-
-            comando.ExecuteNonQuery();
-        }
-        
-        if (x.Stock != 0)
-        {
-            comando.Parameters.Clear();
-            
-            comando.CommandText = "UPDATE Productos SET Stock = Stock - $stock WHERE Id = $id AND Stock >= $stock;";
-            comando.Parameters.AddWithValue("$stock", x.Stock);
-            comando.Parameters.AddWithValue("$id", id);
-
-            comando.ExecuteNonQuery();
+            return new ProductoIndividualDTO
+            {
+                Nombre = leer.GetString(0),
+                Precio = leer.GetInt32(1),
+                Stock = leer.GetInt32(2),
+                CatalogoNombre = leer.GetString(3)
+            };
         }
 
-        if (x.IdCatalogo > 0)
-        {
-            comando.Parameters.Clear();
-            comando.CommandText = "UPDATE Productos SET IdCatalogo = $cata WHERE Id = $id;";
-
-            comando.Parameters.AddWithValue("$cata", x.IdCatalogo);
-            comando.Parameters.AddWithValue("$id", id);
-
-            comando.ExecuteNonQuery();
-        }
-
-        return _auxiliarservice.ObtenerPorId(id);
+        return null;
     }
 
     public void BorrarPorId (int id)
@@ -68,17 +79,5 @@ public class ProductoService
         comando.Parameters.AddWithValue("$id",id);
         comando.ExecuteNonQuery();
     }
-    public ProductoIndividualDTO ObtenerPorId(int id)
-    {
-        return _auxiliarservice.ObtenerPorId(id);
-    }
-
-    private readonly AuxiliarService _auxiliarservice;
-
-    public ProductoService(AuxiliarService auxiliarservice)
-    {
-         _auxiliarservice = auxiliarservice;
-    }
-
     
 }
