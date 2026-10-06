@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using TP2.DTOs;
+using TP2.Models;
 using Utils;
 namespace TP2.Services;
 
@@ -27,7 +28,26 @@ public class CatalogoService
 
     public CatalogoDTO EnCatalogoPorId(int id)
     {
-        return _auxiliarservice.EnCatalogoPorId(id);
+        using var conexion = new UtilsDB().CrearConexion();
+        using var comando = conexion.CreateCommand();
+
+        comando.CommandText = "SELECT Id, CatalogoNombre FROM Catalogo WHERE Id = $id;";
+        comando.Parameters.AddWithValue("$id", id);
+
+        using var leer = comando.ExecuteReader();
+
+        if (leer.Read())
+        {
+            string nombreCatalogo = leer.GetString(1);
+
+            return new CatalogoDTO
+            {
+                IdCatalogo = id,
+                CatalogoNombre = nombreCatalogo,
+                Productos = ObtenerProductosPorCatalogo(id)
+            };
+        };
+        return null;
     }
 
     public List<CatalogoDTO> EnTodosCatalogos()
@@ -42,7 +62,8 @@ public class CatalogoService
 
         while (res.Read())
         {
-            catalogos.Add(_auxiliarservice.EnCatalogoPorId(res.GetInt32(0)));
+            int id = res.GetInt32(0);
+            catalogos.Add(EnCatalogoPorId(id));
         }
 
         return catalogos;
@@ -57,12 +78,28 @@ public class CatalogoService
         comando.Parameters.AddWithValue("$id",id);
         comando.ExecuteNonQuery();
     }
-
-    private readonly AuxiliarService _auxiliarservice;
-
-    public CatalogoService(AuxiliarService auxiliarservice)
+    private List<Producto> ObtenerProductosPorCatalogo(int idCatalogo)//antes era GetAllProductos
     {
-         _auxiliarservice = auxiliarservice;
+        List<Producto> productos = new List<Producto>();
+        using var conexion = new UtilsDB().CrearConexion();
+        using var comando = conexion.CreateCommand();
+
+        comando.CommandText = "SELECT Id, Nombre, Stock, Precio, IdCatalogo FROM Productos WHERE IdCatalogo = $idc;";
+        comando.Parameters.AddWithValue("$idc", idCatalogo);
+
+        using var res = comando.ExecuteReader();
+        while (res.Read())
+        {
+            productos.Add(new Producto
+            {
+                Id = res.GetInt32(0),
+                Nombre = res.GetString(1),
+                Stock = res.GetInt32(2),
+                Precio = res.GetInt32(3)
+            });
+        }
+
+        return productos;
     }
 }
 
