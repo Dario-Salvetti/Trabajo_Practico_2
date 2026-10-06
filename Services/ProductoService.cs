@@ -5,9 +5,10 @@ namespace TP2.Services;
 
 public class ProductoService
 {
+        private readonly UtilsDB _utilsDB;
     public void CrearProd(ProductoDTO p)
     {
-        using var conexion = new UtilsDB().CrearConexion();
+        using var conexion = _utilsDB.CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "INSERT INTO Productos (Nombre, Stock, Precio, IdCatalogo) VALUES ($n, $s, $p, $idc);";
@@ -43,7 +44,7 @@ public class ProductoService
 
     public ProductoIndividualDTO ObtenerPorId(int id)//lo del left join que no conociamos que nos permite mirar dos tablas en la misma consulta
     {
-        using var conexion = new UtilsDB().CrearConexion();
+        using var conexion = _utilsDB.CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = @"
@@ -72,7 +73,7 @@ public class ProductoService
 
     public void BorrarPorId (int id)
     {
-        using var conexion = new UtilsDB().CrearConexion();
+        using var conexion = _utilsDB.CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "DELETE FROM Productos WHERE Id = $id;";
