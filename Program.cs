@@ -13,7 +13,6 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 using var conexion = new UtilsDB().CrearConexion();
-conexion.Open();
 using var crearTablas = conexion.CreateCommand();
 crearTablas.CommandText = @"
     CREATE TABLE IF NOT EXISTS Catalogo (
