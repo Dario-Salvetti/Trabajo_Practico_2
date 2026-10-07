@@ -5,7 +5,11 @@ namespace TP2.Services;
 
 public class ProductoService
 {
-        private readonly UtilsDB _utilsDB;
+    private readonly UtilsDB _utilsDB;
+    public ProductoService(UtilsDB utilsDB)
+    {
+        _utilsDB = utilsDB;
+    }
     public void CrearProd(ProductoDTO p)
     {
         using var conexion = _utilsDB.CrearConexion();
