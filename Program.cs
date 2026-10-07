@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<UtilsDB>();
 builder.Services.AddScoped<CatalogoService>();
 builder.Services.AddScoped<ProductoService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

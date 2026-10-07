@@ -7,6 +7,10 @@ namespace TP2.Services;
 public class CatalogoService
 {
     private readonly UtilsDB _utilsDB;
+    public CatalogoService(UtilsDB utilsDB)
+    {
+        _utilsDB = utilsDB;
+    }
     public void CrearCatalogo (CrearCatalogoDTO c)
     {
         using var conexion = _utilsDB.CrearConexion();
