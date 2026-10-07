@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
 using TP2.Services;
-
+using Utils;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,10 +12,7 @@ builder.Services.AddScoped<ProductoService>();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
-
-string rutaBaseDedatos= "BasesDatos/BDProductos.db";
-using var conexion = new SqliteConnection($"Data Source={rutaBaseDedatos}");
-conexion.Open();
+using var conexion = new UtilsDB().CrearConexion();
 using var crearTablas = conexion.CreateCommand();
 crearTablas.CommandText = @"
     CREATE TABLE IF NOT EXISTS Catalogo (

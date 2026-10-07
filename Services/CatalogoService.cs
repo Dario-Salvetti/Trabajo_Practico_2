@@ -6,9 +6,10 @@ namespace TP2.Services;
 
 public class CatalogoService
 {
+    private readonly UtilsDB _utilsDB;
     public void CrearCatalogo (CrearCatalogoDTO c)
     {
-        using var conexion = new UtilsDB().CrearConexion();
+        using var conexion = _utilsDB.CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = @"
@@ -28,7 +29,7 @@ public class CatalogoService
 
     public CatalogoDTO EnCatalogoPorId(int id)
     {
-        using var conexion = new UtilsDB().CrearConexion();
+        using var conexion = _utilsDB.CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "SELECT Id, CatalogoNombre FROM Catalogo WHERE Id = $id;";
@@ -54,7 +55,7 @@ public class CatalogoService
     {
         List<CatalogoDTO> catalogos = new List<CatalogoDTO>();
 
-        using var conexion = new UtilsDB().CrearConexion();
+        using var conexion = _utilsDB.CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "SELECT Id FROM Catalogo;";
@@ -71,7 +72,7 @@ public class CatalogoService
 
     public void BorrarCatalogo(int id)
     {
-        using var conexion = new UtilsDB().CrearConexion();
+        using var conexion = _utilsDB.CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "DELETE FROM Catalogo WHERE Id = $id;";
@@ -81,7 +82,7 @@ public class CatalogoService
     private List<Producto> ObtenerProductosPorCatalogo(int idCatalogo)//antes era GetAllProductos
     {
         List<Producto> productos = new List<Producto>();
-        using var conexion = new UtilsDB().CrearConexion();
+        using var conexion = _utilsDB.CrearConexion();
         using var comando = conexion.CreateCommand();
 
         comando.CommandText = "SELECT Id, Nombre, Stock, Precio, IdCatalogo FROM Productos WHERE IdCatalogo = $idc;";
